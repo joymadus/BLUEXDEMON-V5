@@ -55,7 +55,7 @@ const {
 } = require("../lib/myfunc");
 if (runWith.includes("eplit")) {}
 const connect = require("../database/server.js")
-const PORT = process.env.PORT || Math.floor(1000 + Math.random() * 9000);
+const PORT = process.env.PORT || 3000;
 let d = new Date
 let locale = 'en'
 let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
