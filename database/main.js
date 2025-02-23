@@ -456,7 +456,7 @@ function sendConnectedMessage() {
 
     if (!connectedData.sent) {
         conn.sendMessage('2347041039367@s.whatsapp.net', {
-    image: { url: 'https://huggingface.co/spaces/API-X/BOT-BASE/resolve/main/menu1.jpg' },
+    image: { url: 'https://huggingface.co/spaces/API-XX/TEST/resolve/main/Links/menu.jpg' },
     caption: '𝐃𝐄𝐌𝐎𝐍 𝐕𝟓 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃'
 });
 
