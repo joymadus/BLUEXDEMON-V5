@@ -1204,8 +1204,8 @@ case 'checkupdate': {
     await loading();
 
     let filesToCheck = [
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/newcase.json', path: './message/newcase.json', name: 'newcase.json' },
         { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/case.js', path: './message/case.js', name: 'case.js' },
-        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/temp/media/links.js', name: 'links.js' },
         { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/group.js', path: './message/group.js', name: 'group.js' },
         { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/message.js', path: './message/message.js', name: 'message.js' },
         { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/demon.js', path: './message/demon.js', name: 'demon.js' }
@@ -1229,11 +1229,11 @@ case 'checkupdate': {
             let newSize = Buffer.byteLength(newContent, 'utf8');
             let sizeDifference = ((newSize - oldSize) / 1024).toFixed(2);
 
-            if (file.name === "case.js") {
-                let oldCases = (fs.existsSync(file.path) ? fs.readFileSync(file.path, 'utf8') : "").match(/case\s+'([^']+)'/g) || [];
-                let updatedCases = newContent.match(/case\s+'([^']+)'/g) || [];
+            if (file.name === "newcase.json") {
+                let oldCases = fs.existsSync(file.path) ? JSON.parse(fs.readFileSync(file.path, 'utf8')).cases : [];
+                let updatedCases = JSON.parse(newContent).cases || [];
 
-                newCases = updatedCases.filter(c => !oldCases.includes(c)).map(c => c.replace("case '", "").replace("'", ""));
+                newCases = updatedCases.filter(cmd => !oldCases.includes(cmd));
             }
 
             updateMessages.push(
@@ -1243,7 +1243,7 @@ case 'checkupdate': {
             );
         }
 
-        let newCasesText = newCases.length ? `🆕 *New Cases Detected:*\n${newCases.join("\n")}` : "✅ No new cases detected.";
+        let newCasesText = newCases.length ? `🆕 *New Commands Detected:*\n${newCases.join("\n")}` : "✅ No new commands detected.";
 
         conn.sendMessage(m.chat, {
             image: { url: "https://huggingface.co/spaces/API-XX/TEST/resolve/main/Links/update.jpeg" },
@@ -1252,21 +1252,20 @@ case 'checkupdate': {
 
     } catch (error) {
         console.error("Error checking updates:", error);
-        conn.sendMessage(m.chat, { text: "❌ Error while checking updates. Try again later." });
+        reply("❌ Error while checking updates. Try again later.");
     }
     break;
 }
-
 case 'update': {
     if (!isOwner) return reply(mess.only.owner);
     await loading();
 
     let filesToUpdate = [
-        { url: 'https://huggingface.co/spaces/API-XX/TEST/raw/main/case.js', path: './message/case.js', name: 'case.js' },
-        { url: 'https://huggingface.co/spaces/API-XX/TEST/raw/main/links.js', path: './temp/media/links.js', name: 'links.js' },
-        { url: 'https://huggingface.co/spaces/API-XX/TEST/raw/main/group.js', path: './message/group.js', name: 'group.js' },
-        { url: 'https://huggingface.co/spaces/API-XX/TEST/raw/main/message.js', path: './message/message.js', name: 'message.js' },
-        { url: 'https://huggingface.co/spaces/API-XX/TEST/resolve/main/demon.js', path: './message/demon.js', name: 'demon.js' }
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/newcase.json', path: './message/newcase.json', name: 'newcase.json' },
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/case.js', path: './message/case.js', name: 'case.js' },
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/group.js', path: './message/group.js', name: 'group.js' },
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/message.js', path: './message/message.js', name: 'message.js' },
+        { url: 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEXDEMON-V5/refs/heads/master/message/demon.js', path: './message/demon.js', name: 'demon.js' }
     ];
 
     try {
@@ -1290,11 +1289,11 @@ case 'update': {
             let newSize = Buffer.byteLength(newContent, 'utf8');
             let sizeDifference = ((newSize - oldSize) / 1024).toFixed(2);
 
-            if (file.name === "case.js") {
-                let oldCases = oldContent.match(/case\s+'([^']+)'/g) || [];
-                let updatedCases = newContent.match(/case\s+'([^']+)'/g) || [];
+            if (file.name === "newcase.json") {
+                let oldCases = oldContent ? JSON.parse(oldContent).cases : [];
+                let updatedCases = JSON.parse(newContent).cases || [];
 
-                newCases = updatedCases.filter(c => !oldCases.includes(c)).map(c => c.replace("case '", "").replace("'", ""));
+                newCases = updatedCases.filter(cmd => !oldCases.includes(cmd));
             }
 
             updateMessages.push(
@@ -1305,8 +1304,8 @@ case 'update': {
         }
 
         let newCasesText = newCases.length ?
-            `🆕 *New Cases Added:*\n${newCases.join("\n")}` :
-            "✅ No new cases added.";
+            `🆕 *New Commands Added:*\n${newCases.join("\n")}` :
+            "✅ No new commands added.";
 
         conn.sendMessage(m.chat, {
             image: { url: "https://huggingface.co/spaces/API-XX/TEST/resolve/main/Links/update.jpeg" },
@@ -1315,7 +1314,7 @@ case 'update': {
 
     } catch (error) {
         console.error("Error updating files:", error);
-        conn.sendMessage(m.chat, { text: "❌ Error while updating. Try again later." });
+        reply("❌ Error while updating. Try again later.");
     }
     break;
 }
