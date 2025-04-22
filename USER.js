@@ -1,8 +1,8 @@
-const pairNumber = "2348078486820";
+const pairNumber = "2348085206068";
 
-const accNumber = "8039286212"
+const accNumber = "8085206068"
 
-const name = "Akorede tunmise "
+const name = "Christopher Mobi "
 
 const bankName = "opay"
 
